@@ -29,15 +29,23 @@ router.get('/api/products/:pid', (req, res) => {
 router.post('/api/products', (req, res) => {
 
     const newProduct = req.body;
+
+    // Validamos que se proporcionen todos los campos
+    if (!newProduct.id ||
+        !newProduct.name ||
+        !newProduct.price ||
+        !newProduct.description ||
+        !newProduct.code ||
+        !newProduct.stock ||
+        !newProduct.category) {
+        return res.status(400).json({ error: 'Debe proporcionar todos los campos (id, name, price, description, code, stock, category).' });
+    }
+
     products.push(newProduct);
 
     res.json({ message: 'Producto agregado correctamente.' });
 
 });
-
-function generateUniqueId() {
-    return Date.now().toString();
-}
 
 // Ruta para actualizar un producto por su ID (PUT /:pid)
 router.put('/api/products/:pid', (req, res) => {
